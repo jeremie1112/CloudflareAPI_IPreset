@@ -17,7 +17,7 @@ dnsrecord="www.domain.name"
 
 ## Cloudflare authentication details
 ## keep these private
-cloudflare_api_token="uTSPbijb-4-5zf6GeWXUsLL3M3-rwmRN0ssu2R1x"
+cloudflare_api_token="Secret API code"
 
 
 function update_ip() {
