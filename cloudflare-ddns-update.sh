@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Update a Cloudflare DNS A record with the external IP of the source machine
+# Update a Cloudflare DNS A record with the Public IP of the source machine
 
 # Prerequisites:
 # - DNS Record has to be created manually at Cloudflare
@@ -11,13 +11,13 @@
 #export https_proxy=http://<proxyuser>:<proxypassword>@<proxyip>:<proxyport>
 
 # Cloudflare zone is the zone which holds the record
-zone="mydomain.com"
+zone="domain.name"
 # dnsrecord is the A record which will be updated
-dnsrecord="example.mydomain.com"
+dnsrecord="domain.name"
 
 ## Cloudflare authentication details
 ## keep these private
-cloudflare_api_token="my-super-secret-api-token"
+cloudflare_api_token="secret API code"
 
 
 function update_ip() {
@@ -41,13 +41,14 @@ function update_ip() {
   curl -s -X PUT "https://api.cloudflare.com/client/v4/zones/$zoneid/dns_records/$dnsrecordid" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $cloudflare_api_token" \
-    --data "{\"type\":\"A\",\"name\":\"$dnsrecord\",\"content\":\"$ip\",\"ttl\":1,\"proxied\":false}" | jq
+    --data "{\"type\":\"A\",\"name\":\"$dnsrecord\",\"content\":\"$ip\",\"ttl\":1,\"proxied\":true}" | jq
 }
 
 function get_ip() {
   # Get the public IP address
   ip=$(curl -s -X GET https://checkip.amazonaws.com)
   dnsip=$(dig $dnsrecord +short @1.1.1.1)
+
   echo "Public IP is $ip"
 
   if [[ "$dnsip" == "$ip" ]]; then
