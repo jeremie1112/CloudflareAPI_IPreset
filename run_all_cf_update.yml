@@ -1,0 +1,24 @@
+- name: "Running all Cloudflare DNS Updates"
+  hosts: 127.0.0.1
+  become: yes
+  connection: local
+  tasks:
+
+  - name: "Running DNS update for *.domain.name"
+    shell: "bash /home/jeremie/Documents/scripts/cloudflare-ddns-update_*_.sh"
+    register: "output"
+
+  - debug: var=output.stdout_lines
+
+  - name: "Running DNS update for domain.name"
+    shell: "bash /home/jeremie/Documents/scripts/cloudflare-ddns-update.sh"
+    register: "output1"
+
+  - debug: var=output1.stdout_lines
+
+  - name: "Running DNS update for www.domain.name"
+    shell: "bash /home/jeremie/Documents/scripts/cloudflare-ddns-update_www_.sh"
+    register: "output2"
+
+  - debug: var=output2.stdout_lines
+
